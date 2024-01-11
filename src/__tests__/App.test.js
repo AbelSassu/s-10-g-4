@@ -1,50 +1,50 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import App from '../App'
 
-describe('main rendering tests', () => {
-  it('renders Welcome component', () => {
+describe('Test render main', () => {
+  it('Test component main', () => {
     render(<App />)
     const mainHeader = screen.getByRole('heading', {
-      name: /benvenuti in epibooks!/i,
+      name: /Benvenuti in Epibooks!/i,
     })
     expect(mainHeader).toBeInTheDocument()
   })
 
-  it('renders all the 150 books', () => {
+  it('Render di tutti i libri', () => {
     render(<App />)
     const allTheBookCards = screen.getAllByTestId('book-card')
     expect(allTheBookCards).toHaveLength(150)
   })
 
-  it('renders CommentArea component', () => {
+  it('Render component CommentArea', () => {
     render(<App />)
     const reviewInputField = screen.getByPlaceholderText(
-      /inserisci qui il testo/i
+      /Inserisci qui il testo/i
     )
     expect(reviewInputField).toBeInTheDocument()
   })
 })
 
-describe('filter testing', () => {
-  it("finds just one result for the word 'arrow'", () => {
+describe('Test Filter', () => {
+  it("Trova un solo elemento con la parola arrow", () => {
     render(<App />)
-    const filterInputField = screen.getByPlaceholderText(/cerca un libro/i)
+    const filterInputField = screen.getByPlaceholderText(/Cerca un libro/i)
     fireEvent.change(filterInputField, { target: { value: 'arrows' } })
     const allTheBookCards = screen.getAllByTestId('book-card')
     expect(allTheBookCards).toHaveLength(1)
   })
 
-  it("finds three results for the word 'witcher'", () => {
+  it("Trova 3 elementi con la parola witcher", () => {
     render(<App />)
-    const filterInputField = screen.getByPlaceholderText(/cerca un libro/i)
+    const filterInputField = screen.getByPlaceholderText(/Cerca un libro/i)
     fireEvent.change(filterInputField, { target: { value: 'witcher' } })
     const allTheBookCards = screen.getAllByTestId('book-card')
     expect(allTheBookCards).toHaveLength(3)
   })
 })
 
-describe('SingleBook testing', () => {
-  it('makes book card border change clicking on it', () => {
+describe('Test Component SingleBook', () => {
+  it('clickare il libro cambia il border in colorato', () => {
     render(<App />)
     const allTheBookCards = screen.getAllByTestId('book-card')
     const firstBookCard = allTheBookCards[0]
@@ -52,7 +52,7 @@ describe('SingleBook testing', () => {
     expect(firstBookCard).toHaveStyle('border: 3px solid red')
   })
 
-  it('restores normal border after clicking on a second book', () => {
+  it('riclickando il libro resetta il border al precedente', () => {
     render(<App />)
     const allTheBookCards = screen.getAllByTestId('book-card')
     const firstBookCard = allTheBookCards[0]
@@ -64,14 +64,14 @@ describe('SingleBook testing', () => {
   })
 })
 
-describe('CommentList testing', () => {
-  it('renders no book comments on load', () => {
+describe('Test CommentList', () => {
+  it('Non carica commenti al load del componente', () => {
     render(<App />)
     const allTheBookComments = screen.queryAllByTestId('single-comment')
     expect(allTheBookComments).toHaveLength(0)
   })
 
-  it('renders comments clicking on a valid book', async () => {
+  it('Carica i commenti al click del libro', async () => {
     render(<App />)
     const allTheBookCards = screen.getAllByTestId('book-card')
     const firstBookCard = allTheBookCards[0]
